@@ -1,10 +1,12 @@
 package com.example.demo.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Component {
@@ -15,11 +17,10 @@ public class Component {
      private String description;
      private String suppliers;
      private String productname;
-     
-   
 
- 	@OneToOne(mappedBy ="component")
- 	Product product;
+     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+     @JoinColumn(name = "product_id", nullable = false)
+     private Product product;
 
 
 	public Integer getComponentid() {
@@ -27,6 +28,16 @@ public class Component {
 	}
 	
 	
+	public Product getProduct() {
+		return product;
+	}
+
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+
 	public void setComponentid(Integer componentid) {
 		this.componentid = componentid;
 	}

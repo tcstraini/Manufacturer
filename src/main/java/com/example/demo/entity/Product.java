@@ -1,12 +1,22 @@
 package com.example.demo.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import org.hibernate.FetchMode;
+import org.hibernate.annotations.Fetch;
 
 @Entity
 public class Product {
@@ -15,18 +25,20 @@ public class Product {
     private Integer productid;
     private String productname;
     private String quantity;
+   
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<Component> components;
     
-    @OneToOne(cascade = CascadeType.ALL)
- 	@JoinColumn(name="component_id", referencedColumnName = "componentid")
- 	Component component;
-     
+    
+    
+    public Set<Component> getComponents() {
+		return components;
+	}
+	public void setComponents(Set<Component> components) {
+		this.components = components;
+	}
 	
-	public Component getComponent() {
-		return component;
-	}
-	public void setComponent(Component component) {
-		this.component = component;
-	}
 	public Integer getProductid() {
 		return productid;
 	}

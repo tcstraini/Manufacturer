@@ -1,22 +1,25 @@
 package com.example.demo.service;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.entity.Component;
 import com.example.demo.entity.Product;
-
+import com.example.demo.repository.ProductRepository;
 
 @Service
 public class ProductService {
-
-	@Autowired
-	ProductRepository productRepository;
 	
-	public void saveProduct(Product product) {
-    	productRepository.save(product);
-    }
-	public  Iterable<Product> getProducts() {
-		return productRepository.findAll();
+	@Autowired
+	private ProductRepository productRepository;
+
+	public void addProduct(Product product) {
+		Set<Component> components =  product.getComponents();
+		for(Component component: components) {
+			component.setProduct(product);
+		}
+		productRepository.save(product);
 	}
 }
